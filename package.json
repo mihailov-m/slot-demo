@@ -1,0 +1,14 @@
+{
+  "name": "slot-machine-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm --parallel --stream -r dev",
+    "build": "pnpm --filter client build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

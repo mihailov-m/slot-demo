@@ -1,0 +1,25 @@
+.spinButton {
+    font-size: 1.5em;
+    padding: 10px 30px;
+    border-radius: 50px;
+    border: 2px solid #fff;
+    background-color: #1a6a8a;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.spinButton:hover:not(:disabled) {
+    background-color: #2a8ab8;
+}
+
+.spinButton:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.spinButton:disabled {
+    background-color: #555;
+    color: #999;
+    cursor: not-allowed;
+    border-color: #777;
+}
