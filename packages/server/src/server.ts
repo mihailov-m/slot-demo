@@ -27,7 +27,7 @@ const PAYTABLE: Record<string, Record<number, number>> = {
 
 // -----------------------------------------------------------------
 
-const wss = new WebSocketServer({port: 8080});
+const wss = new WebSocketServer({ port: parseInt(process.env.PORT || '8080') });
 
 console.log('ws on 8080');
 

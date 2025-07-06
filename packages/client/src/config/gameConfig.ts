@@ -24,6 +24,6 @@ export const gameConfig = {
         REEL_STOP_DELAY_MS: 500,
     },
     SYMBOLS_COUNT: 8,
-    SERVER_URL: 'ws://localhost:8080',
+    SERVER_URL: 'wss://slot-demo-server.onrender.com',
     BET_AMOUNT: 10,
 };
