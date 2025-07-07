@@ -155,8 +155,6 @@ export class Reel {
                 onComplete: () => {
                     this.stopTween?.kill();
                     this.stopTween = null;
-                    this.updateSymbolRows();
-                    this.snapSymbolsToGrid();
                     this.eventBus.emit(EventType.REEL_STOPPED, {reelIndex: this.reelIndex});
                 }
             });
@@ -191,6 +189,7 @@ export class Reel {
         const fullHeight = this.symbolSize.height + gameConfig.REELS.SYMBOL_PADDING;
         const maxY = gameConfig.REELS.SYMBOLS * fullHeight;
 
+        let stopFlag = false;
         for (const symbol of this.symbols) {
             symbol.y += this.spinSpeed * this.ticker.deltaMS;
             if (symbol.y > maxY) {
@@ -202,7 +201,7 @@ export class Reel {
                         nextSymbolId = <string>this.finalSymbolsQueue.pop();
                     }
                     if (queueLength === 1) {
-                        this.stop();
+                        stopFlag = true;
                     }
                 } else {
                     nextSymbolId = this.getRandomSymbolId();
@@ -213,17 +212,17 @@ export class Reel {
                 symbol.symbolId = nextSymbolId;
             }
         }
+
+        if (stopFlag) {
+            this.updateSymbolRows();
+            this.snapSymbolsToGrid();
+            this.stop();
+        }
     }
 
     private snapSymbolsToGrid(): void {
         for (const s of this.symbols) {
-            const targetIdx = s.row + 1;
-            if (this.symbolY[targetIdx] !== undefined) {
-                s.y = this.symbolY[targetIdx];
-            } else {
-                const fullH = this.symbolSize.height + gameConfig.REELS.SYMBOL_PADDING;
-                s.y = (targetIdx - 1) * fullH;
-            }
+            s.y = this.symbolY[s.row + 1];
         }
     }
 }
