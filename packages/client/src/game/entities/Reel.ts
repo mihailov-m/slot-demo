@@ -133,18 +133,14 @@ export class Reel {
         if (!this.isSpinning) return;
         this.isSpinning = false;
 
-        if (this.spinTween) {
-            this.spinTween.kill();
-            this.spinTween = null;
-        }
+        this.spinTween?.kill();
+        this.spinTween = null;
 
         this.ticker.remove(this.updateSpinCallback);
         this.ticker.stop();
 
-        if (this.stopTween) {
-            this.stopTween.kill();
-            this.stopTween = null;
-        }
+        this.stopTween?.kill();
+        this.stopTween = null;
 
         this.stopTween = gsap.timeline()
             .to(this.symbols, {
@@ -157,11 +153,10 @@ export class Reel {
                 duration: 0.3,
                 ease: "elastic.out(1.2,0.3)",
                 onComplete: () => {
-                    if (this.stopTween) {
-                        this.stopTween.kill();
-                        this.stopTween = null;
-                    }
+                    this.stopTween?.kill();
+                    this.stopTween = null;
                     this.updateSymbolRows();
+                    this.snapSymbolsToGrid();
                     this.eventBus.emit(EventType.REEL_STOPPED, {reelIndex: this.reelIndex});
                 }
             });
@@ -216,6 +211,18 @@ export class Reel {
                 symbol.y -= (gameConfig.REELS.SYMBOLS + 1) * fullHeight;
                 symbol.texture = this.assetService.textures[nextSymbolId];
                 symbol.symbolId = nextSymbolId;
+            }
+        }
+    }
+
+    private snapSymbolsToGrid(): void {
+        for (const s of this.symbols) {
+            const targetIdx = s.row + 1;
+            if (this.symbolY[targetIdx] !== undefined) {
+                s.y = this.symbolY[targetIdx];
+            } else {
+                const fullH = this.symbolSize.height + gameConfig.REELS.SYMBOL_PADDING;
+                s.y = (targetIdx - 1) * fullH;
             }
         }
     }
