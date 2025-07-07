@@ -8,3 +8,16 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <App/>
     </React.StrictMode>,
 )
+
+function applyScale() {
+  const inner = document.getElementById("scaler-inner");
+  if (!inner) return;
+  const scale = Math.min(
+    window.innerWidth / 1280,
+    window.innerHeight / 720
+  );
+  inner.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener("resize", applyScale);
+window.addEventListener("load", applyScale);
